@@ -1,31 +1,33 @@
-/* import express from "express";
-import colors from "colors";
-import userRoutes from "./routes/userRoutes.js";
-import connectDB from "./config/db.js";
-import cors from "cors";
-
 import dotenv from "dotenv";
+import express from "express";
+import cors from "cors";
+import colors from "colors";
+import connectDB from "./config/db.js";
+import blogRouter from "./routes/blogRouter.js";
+
 dotenv.config();
 
 connectDB();
 
-const PORT = 5000;
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+const PORT = 4321;
 
+app.use(express.json());
 app.use(cors());
 
-app.use("/api/users", userRoutes);
+// Logger middleware
+app.use((req, res, next) => {
+  console.log("[Request]: ".yellow + req.path.magenta);
+  return next();
+});
+
+app.get("/api/status", (req, res) => {
+  res.sendStatus(200);
+});
+
+app.use("/api/posts", blogRouter);
 
 app.listen(PORT, () => {
-  console.log(`server running on port ${PORT}`.magenta.underline);
+  console.log(`Server running at port ${PORT}.`);
 });
- */
-
-import dotenv from "dotenv";
-
-dotenv.config();
-
-console.log(process.env.FOO);
